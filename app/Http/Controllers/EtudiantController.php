@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Etudiant;
 
 class EtudiantController extends Controller
 {
@@ -11,7 +12,9 @@ class EtudiantController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des étudiants
+        $etudiants = Etudiant::all();
+        return view('etudiants.index', compact('etudiants'));   
     }
 
     /**
@@ -19,7 +22,8 @@ class EtudiantController extends Controller
      */
     public function create()
     {
-        //
+        // formulaire de création d'un étudiant
+        return view('etudiants.create');
     }
 
     /**
@@ -27,7 +31,14 @@ class EtudiantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // traitement de la création d'un nouvel étudiant
+        $validatedData = $request->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'adresse' => 'required|string|max:255',
+            'nom tuteur' => 'required|string|max:255',
+            'numero tuteur' => 'required|string|max:255',
+        ]);
     }
 
     /**
@@ -43,7 +54,9 @@ class EtudiantController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'un étudiant
+        $etudiant = Etudiant::findOrFail($id);
+        return view('etudiants.edit', compact('etudiant'));
     }
 
     /**
@@ -59,6 +72,9 @@ class EtudiantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'un étudiant
+        $etudiant = Etudiant::findOrFail($id);
+        $etudiant->delete();
+        return redirect()->route('etudiants.index')->with('success', 'Étudiant supprimé avec succès.');
     }
 }

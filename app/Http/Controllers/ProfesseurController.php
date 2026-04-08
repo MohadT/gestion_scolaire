@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Professeur;
 
 class ProfesseurController extends Controller
 {
@@ -11,7 +12,9 @@ class ProfesseurController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des professeurs
+        $professeurs = Professeur::all();
+        return view('professeurs.index', compact('professeurs'));
     }
 
     /**
@@ -19,7 +22,8 @@ class ProfesseurController extends Controller
      */
     public function create()
     {
-        //
+        // formulaire de création d'un professeur
+        return view('professeurs.create');
     }
 
     /**
@@ -43,7 +47,9 @@ class ProfesseurController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'un professeur
+        $professeur = Professeur::findOrFail($id);
+        return view('professeurs.edit', compact('professeur'));
     }
 
     /**
@@ -59,6 +65,9 @@ class ProfesseurController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'un professeur
+        $professeur = Professeur::findOrFail($id);
+        $professeur->delete();
+        return redirect()->route('professeurs.index')->with('success', 'Professeur supprimé avec succès.');
     }
 }

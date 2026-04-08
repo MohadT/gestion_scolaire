@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Evaluation;
 
 class EvaluationController extends Controller
 {
@@ -11,7 +12,9 @@ class EvaluationController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des évaluations
+        $evaluations = Evaluation::all();
+        return view('evaluations.index', compact('evaluations'));
     }
 
     /**
@@ -19,7 +22,8 @@ class EvaluationController extends Controller
      */
     public function create()
     {
-        //
+        //  formulaire de création d'une évaluation
+        return view('evaluations.create');
     }
 
     /**
@@ -43,7 +47,9 @@ class EvaluationController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'une évaluation
+        $evaluation = Evaluation::findOrFail($id);
+        return view('evaluations.edit', compact('evaluation'));
     }
 
     /**
@@ -59,6 +65,9 @@ class EvaluationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'une évaluation
+        $evaluation = Evaluation::findOrFail($id);
+        $evaluation->delete();
+        return redirect()->route('evaluations.index')->with('success', 'Évaluation supprimée
     }
 }

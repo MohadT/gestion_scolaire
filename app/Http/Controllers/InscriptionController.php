@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Inscription;
 
 class InscriptionController extends Controller
 {
@@ -11,7 +12,8 @@ class InscriptionController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des inscriptions
+        return view('inscriptions.index');
     }
 
     /**
@@ -19,7 +21,8 @@ class InscriptionController extends Controller
      */
     public function create()
     {
-        //
+        // formulaire de création d'une inscription
+        return view('inscriptions.create');
     }
 
     /**
@@ -27,7 +30,12 @@ class InscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // traitement de la création d'une inscription
+        // validation des données
+        $request->validate([
+            'etudiant_id' => 'required|exists:etudiant,id',
+            'classe_id' => 'required|exists:classe,id',
+        ]);
     }
 
     /**
@@ -43,7 +51,8 @@ class InscriptionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'une inscription
+        return view('inscriptions.edit');
     }
 
     /**
@@ -59,6 +68,9 @@ class InscriptionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'une inscription
+        $inscription = Inscription::findOrFail($id);
+        $inscription->delete();
+        return redirect()->route('inscriptions.index')->with('success', 'Inscription supprimée avec succès.');
     }
 }

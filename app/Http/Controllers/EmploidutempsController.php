@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Emploidutemps;
 
 class EmploidutempsController extends Controller
 {
@@ -11,7 +12,9 @@ class EmploidutempsController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des emplois du temps
+        $emplois = Emploidutemps::all();
+        return view('emplois.index', compact('emplois'));
     }
 
     /**
@@ -19,7 +22,8 @@ class EmploidutempsController extends Controller
      */
     public function create()
     {
-        //
+        // formulaire de création d'un emploi du temps
+        return view('emplois.create');
     }
 
     /**
@@ -43,7 +47,9 @@ class EmploidutempsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'un emploi du temps
+        $emploi = Emploidutemps::findOrFail($id);
+        return view('emplois.edit', compact('emploi'));
     }
 
     /**
@@ -59,6 +65,9 @@ class EmploidutempsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'un emploi du temps
+        $emploi = Emploidutemps::findOrFail($id);
+        $emploi->delete();
+        return redirect()->route('emplois.index')->with('success', 'Emploi du temps supprimé avec succès.');
     }
 }

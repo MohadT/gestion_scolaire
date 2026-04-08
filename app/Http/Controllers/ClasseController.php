@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Classe;
 
 class ClasseController extends Controller
 {
@@ -11,7 +12,9 @@ class ClasseController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des classes
+        $classes = Classe::all();
+        return view('classes.index', compact('classes'));   
     }
 
     /**
@@ -19,7 +22,8 @@ class ClasseController extends Controller
      */
     public function create()
     {
-        //
+        // formulaire de création d'une classe
+        return view('classes.create');  
     }
 
     /**
@@ -27,7 +31,13 @@ class ClasseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // traitement de la création d'une nouvelle classe
+        $validatedData = $request->validate([
+            'nom' => 'required|string|max:255',
+        ]);
+        $classe = Classe::create([
+            'nom' => $validatedData['nom'],
+        ]);     
     }
 
     /**
@@ -43,7 +53,9 @@ class ClasseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'une classe
+        $classe = Classe::findOrFail($id);
+        return view('classes.edit', compact('classe'));
     }
 
     /**
@@ -59,6 +71,9 @@ class ClasseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'une classe
+        $classe = Classe::findOrFail($id);
+        $classe->delete();
+        return redirect()->route('classes.index')->with('success', 'Classe supprimée avec succès.');
     }
 }

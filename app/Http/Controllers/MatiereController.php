@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Matiere;
 
 class MatiereController extends Controller
 {
@@ -11,7 +12,9 @@ class MatiereController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des matières
+        $matieres = Matiere::all();
+        return view('matieres.index', compact('matieres'));
     }
 
     /**
@@ -19,7 +22,8 @@ class MatiereController extends Controller
      */
     public function create()
     {
-        //
+        // formulaire de création d'une matière
+        return view('matieres.create');
     }
 
     /**
@@ -43,7 +47,9 @@ class MatiereController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'une matière
+        $matiere = Matiere::findOrFail($id);
+        return view('matieres.edit', compact('matiere'));
     }
 
     /**
@@ -59,6 +65,9 @@ class MatiereController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'une matière
+        $matiere = Matiere::findOrFail($id);
+        $matiere->delete();
+        return redirect()->route('matieres.index')->with('success', 'Matière supprimée avec succès.');
     }
 }

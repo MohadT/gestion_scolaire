@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Note;
 
 class NoteController extends Controller
 {
@@ -11,7 +12,9 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        // la liste des notes
+        $notes = Note::all();
+        return view('notes.index', compact('notes'));
     }
 
     /**
@@ -19,7 +22,8 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        // formulaire de création d'une note
+        return view('notes.create');
     }
 
     /**
@@ -43,7 +47,9 @@ class NoteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // formulaire de modification d'une note
+        $note = Note::findOrFail($id);
+        return view('notes.edit', compact('note'));
     }
 
     /**
@@ -59,6 +65,9 @@ class NoteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // traitement de la suppression d'une note
+        $note = Note::findOrFail($id);
+        $note->delete();
+        return redirect()->route('notes.index')->with('success', 'Note supprimée avec succès.');
     }
 }
