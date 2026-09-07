@@ -1,0 +1,20 @@
+CORRECTIONS ERP SCOLAIRE SaaS
+=============================
+
+Cette archive contient les fichiers corrigés à superposer au projet actuel.
+
+Corrections principales:
+1. Suppression de la récursion auth()->check() dans BelongsToCompany.
+2. Isolation multi-école basée sur session(company_id).
+3. Redirection après connexion selon le rôle.
+4. Suppression du doublon de la route /dashboard.
+5. Protection de la vue login quand $errors n'est pas encore partagé.
+6. Migration multi-tenant avec cascadeOnDelete().
+7. Migration payments.
+8. Migration companies.
+
+IMPORTANT:
+- Ne lance pas composer update.
+- composer install suffit.
+- Si ta base actuelle affiche déjà toutes les migrations [1] Ran, ne fais pas migrate:fresh.
+- Si tu veux reconstruire une base neuve, utilise migrate:fresh puis migrate.
